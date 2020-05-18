@@ -19,17 +19,19 @@ def hello():
 def predict():
 
     # load image
-    img = Image.open(request.files['file'].stream) .convert(mode = 'L').resize((224, 224)).unsqueeze(0)
+    img = Image.open(request.files['file'].stream) 
+    img = img.convert(mode = 'L')
+    img = img.resize((224, 224))
     img = np.array(img)
-    img = torch.FloatTensor(img / 255)
+    img = torch.FloatTensor(img / 255).unsqueeze(0).unsqueeze(0)
 
     # get predictions
     pred = net(img)
-    pred_probas = torch.softmax(pred, axis=0)
+    pred_probas = torch.softmax(pred, axis=1)
 
     return {
-        'pneumonia': pred_probas[1].item(),
-        'normal': pred_probas[0].item()
+        'pneumonia': pred_probas[0][0].item(),
+        'normal': pred_probas[0][1].item()
     }
 
 
