@@ -3,7 +3,6 @@ import torch
 from PIL import Image
 import numpy as np
 from flask_cors import CORS
-import cv2
 app = Flask(__name__)
 CORS(app)
 
